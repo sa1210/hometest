@@ -3,72 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>icontest</title>
-  
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="/22/manifest.json">
-
+  <title>PWAインストールプロンプト</title>
+  <link rel="manifest" href="/manifest.json">
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
-      background-color: #f4f4f4;
+      margin-top: 50px;
     }
-    header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 0;
-    }
-    .content {
-      margin: 20px;
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      font-size: 24px;
-    }
-    p {
-      font-size: 16px;
-      color: #333;
-    }
-    .button {
-      background-color: #4CAF50;
-      color: white;
+    button {
       padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    .button:hover {
+    button:hover {
       background-color: #45a049;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>icontest</h1>
-  </header>
+  <h1>PWA インストールのお願い</h1>
+  <p>このサイトをホーム画面に追加して、アプリのように使用できます。</p>
+  
+  <button id="installBtn" class="hidden">ホーム画面に追加</button>
+  <button id="goToHome" class="hidden">ホームに戻る</button>
 
-  <div class="content">
-    <h2>aaaaaaaa</h2>
- 　　　   <p>てsってsってst</p>   
- 　　　　 <button id="installBtn" style="display:none;">ホーム画面に追加</button>
-　　 </div>
   <script>
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
+    const goToHomeBtn = document.getElementById('goToHome');
 
     // beforeinstallprompt イベントをリッスン
     window.addEventListener('beforeinstallprompt', (e) => {
       // イベントを保存して、後で呼び出せるようにする
       deferredPrompt = e;
       // インストールボタンを表示
-      installBtn.style.display = 'block';
-
-      // ボタンがクリックされたときにインストールプロンプトを表示
+      installBtn.classList.remove('hidden');
+      
+      // インストールボタンがクリックされたときにインストールプロンプトを表示
       installBtn.addEventListener('click', () => {
         // プロンプトを表示
         deferredPrompt.prompt();
@@ -77,6 +55,7 @@
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('ユーザーはホーム画面に追加しました');
+            goToHomeBtn.classList.remove('hidden');
           } else {
             console.log('ユーザーはホーム画面に追加を拒否しました');
           }
@@ -85,11 +64,13 @@
         });
       });
     });
-  </script>
+
+    // 「ホームに戻る」ボタンがクリックされたらホーム画面に移動
+    goToHomeBtn.addEventListener('click', () => {
+      window.location.href = "/";
+    });
 
 
-  
-  <script>
     // Service Worker registration
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
