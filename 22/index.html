@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Issue Panda Shop</title>
+  <title>icontest</title>
   
   <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/22/manifest.json">
 
   <style>
     body {
@@ -62,7 +62,7 @@
     // Service Worker registration
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+        navigator.serviceWorker.register('/22/service-worker.js').then((registration) => {
           console.log('Service Worker registered with scope:', registration.scope);
         }).catch((error) => {
           console.log('Service Worker registration failed:', error);
