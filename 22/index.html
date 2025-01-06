@@ -54,10 +54,41 @@
 
   <div class="content">
     <h2>aaaaaaaa</h2>
-    <p>This is a simple demonstration of a Progressive Web App (PWA).</p>
-    <button class="button" onclick="alert('You have clicked the button!')">Click Me!</button>
-  </div>
+ 　　　   <p>てsってsってst</p>   
+ 　　　　 <button id="installBtn" style="display:none;">ホーム画面に追加</button>
+　　 </div>
+  <script>
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
 
+    // beforeinstallprompt イベントをリッスン
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // イベントを保存して、後で呼び出せるようにする
+      deferredPrompt = e;
+      // インストールボタンを表示
+      installBtn.style.display = 'block';
+
+      // ボタンがクリックされたときにインストールプロンプトを表示
+      installBtn.addEventListener('click', () => {
+        // プロンプトを表示
+        deferredPrompt.prompt();
+        
+        // ユーザーの応答を待つ
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('ユーザーはホーム画面に追加しました');
+          } else {
+            console.log('ユーザーはホーム画面に追加を拒否しました');
+          }
+          // もう一度プロンプトを表示できないように
+          deferredPrompt = null;
+        });
+      });
+    });
+  </script>
+
+
+  
   <script>
     // Service Worker registration
     if ('serviceWorker' in navigator) {
